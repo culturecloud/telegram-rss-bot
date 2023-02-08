@@ -279,7 +279,7 @@ def force_quit(*_):
 def main():
     exit_code = 0
     try:
-        signal.signal(signal.SIGTERM, lambda *_, **__: exit())  # graceful exit handler
+        signal.signal(signal.SIGTERM, lambda *_, **__: exit(exit_code))  # graceful exit handler
 
         init()
 
