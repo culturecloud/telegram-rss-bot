@@ -270,18 +270,20 @@ async def post():
         logger.error('Error when exiting gracefully: ', exc_info=e)
     aio_helper.shutdown()
 
-
 def force_quit(*_):
     logger.critical('Force quitting...', stack_info=True)
     os.kill(os.getpid(), signal.SIGKILL)
 
-
 def main():
     exit_code = 0
     try:
-        signal.signal(signal.SIGTERM, lambda *_, **__: exit(exit_code))  # graceful exit handler
-
-        init()
+        signal.signal(signal.SIGTERM, lambda *_, **__: exit())  # graceful exit handler
+        
+        if not bot:
+            init()
+        else:
+            bot.log_out()
+            init()
 
         loop.run_until_complete(pre())
 

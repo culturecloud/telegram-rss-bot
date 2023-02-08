@@ -2,6 +2,7 @@
     deps = [
         pkgs.python311
         pkgs.mimalloc
+        pkgs.jemalloc
         pkgs.wqy_microhei
     ];
     env = {
