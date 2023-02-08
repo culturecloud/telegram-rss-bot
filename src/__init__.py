@@ -12,6 +12,7 @@ aio_helper.init()
 log.init()
 
 import os
+import shutil
 import signal
 import asyncio
 from functools import partial
@@ -270,8 +271,8 @@ async def post():
         logger.error('Error when exiting gracefully: ', exc_info=e)
     aio_helper.shutdown()
 
-async def graceful_exit():
-    await bot.log_out()
+def graceful_exit():
+    shutil.rmtree("/app/config")
     exit()
 
 def force_quit(*_):
@@ -281,7 +282,7 @@ def force_quit(*_):
 def main():
     exit_code = 0
     try:
-        signal.signal(signal.SIGTERM, lambda *_, **__: loop.run_until_complete(graceful_exit()))  # graceful exit handler
+        signal.signal(signal.SIGTERM, lambda *_, **__: graceful_exit())  # graceful exit handler
         
         init()
 
